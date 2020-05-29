@@ -131,7 +131,7 @@ ggplot(df2, aes(x=DATE, group=1))+
         theme(legend.title=element_blank())
 ```
   
-```{r, fig.align='center', fig.cap="JAV vyriausybės išlaidos ir infliacija (1960-2019m).", echo=FALSE}  
+```{r, fig.align='center', fig.cap="JAV vyriausybės išlaidų ir infliacijos ryšys (1960-2019m).", echo=FALSE}  
 infl <- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FPCPITOTLZGUSA&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1960-01-01", sep=",")
 int<- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FEDFUNDS&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1954-07-01", sep=",")
 infl$DATE <- as.Date(exp$DATE)
