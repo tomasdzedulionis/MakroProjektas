@@ -29,35 +29,131 @@ if(!require("gridExtra")) install.packages("gridExtra"); library("gridExtra") ##
 if(!require("data.table")) install.packages("data.table"); library("data.table") ## for data conversion
 if(!require("eurostat")) install.packages("eurostat"); library("eurostat") ## for eurostat data import
 if(!require("ggthemes")) install.packages("ggthemes"); library("ggthemes") ## ggplot themes
+if(!require("kableExtra"))
+install.packages("kableExtra"); library("kableExtra")
 ```
 
 \newpage
 # Įvadas
+## Darbo aktualumas
+## Darbo uždaviniai
 
-```{r,echo=FALSE,dev="pdf", dev.args=list(encoding="CP1257.enc"), fig.width=8, fig.height=5,fig.cap="Testuojam"}
-exp <- get_eurostat("tet00003", filters=list(time="2019"))
-exp <- exp%>% filter(geo%in%c("AT", "BE", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PT", "SK", "SI", "ES","BG", "HR", "CZ", "DK", "HU", "RO", "SE","EL","EU28"))%>%
-        select(geo,values)%>%
-        rename(export=values)
-imp <- get_eurostat("tet00004", filters=list(time="2019"))
-imp <- imp%>% filter(geo%in%c("AT", "BE", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PT", "SK", "SI", "ES","BG", "HR", "CZ", "DK", "HU","RO", "SE","EL","EU28"))%>%
-        select(geo,values)%>%
-        rename(import=values)
-dfff <- merge(exp,imp)
-dfff <- dfff%>%mutate(trade=import+export)%>%
-        mutate_if(is.numeric, ~round(., 0))
+\newpage
+# Istoriniai požiūriai.
+## Klasikai
+  Klasikinė ekonomikos teorija, atsiradusi XVIIIa. sulig Adamo Smitho „Tautų Turto“ pasirodymu, ir jos pasekėjai pagrindine infliacijos atsiradimo priežastimi laikė pernelyg didelį pinigų kiekį ekonomikoje. Dėl šios priežasties klasikų teorija dažnu atveju yra vadinama kiekybine pinigų teorija [@ireland2014classical].  Savo darbuose klasikai bendrojo kainų lygio svyravimus aiškino pasitelkdami fundamentalią pinigų paklausos ir pinigų pasiūlos sąveika - padidėjusi pinigų pasiūla didina bendrąjį kainų lygį, o tai sumažina piniginio vieneto perkamąją galią bei sukelia infliaciją. Ši teorija leidžia į infliacijos problemą žvelgti tiesiausiu kampu - ignoruojant tokias dedamąsias kaip palūkanų lygis ar nedarbas.
+  Klasikų suformuotos teorijos išvados, kaip pagrindinį infliacijos suvaldymo įrankį, iškelia  centrinių bankų atsakomybę - pinigų pasiūlos mažinimą. Suformuota teorija ir jos kūrėjai tikėjo, jog pagrindinis ekonomikos valdymas vyksta reguliuojant pinigų kiekį, o pagrindiniu antiinfliaciniu mechanizmu laikė "šalto dušo" ekonomikai taikymą, kai drastiškai sumažinama pinigų pasiūla, apie tai pranešama iš anksto ir taip sumažinami infliaciniai lūkesčiai [@ball2017inflation]. Sumažėjusi pinigų paklausa padidins palūkanų normą ir taip sumažins išlaidavimą ir skolinimąsį bei sumažins konkurenciją dėl resursų, o stabilus pinigų pasiūlos didinimas tokiu pat lygiu, kokiu auga ir ekonomika, užtikrins stabilų kainų lygį. Šią infliacinę teoriją atspindi ir pavyzdžiui JAV Federalinio rezervų banko tikslas - naudojant pinigų kiekio reguliacijos mechanizmus užtikrinti kainų stabilumą ir visišką užimtumą, tačiau klasikų siūlytos šalto dušo priemonės susilaukė kritikos ir tolimesnių tyrimų.
 
-ggplot(dfff, aes(x=reorder(geo, -trade),y=trade))+
-        geom_bar(stat="identity", fill="steelblue")+
+## Keinsistai.
+  J.M.Keynes'as ir jo pasekėjai kritikavo klasikų požiūrį bei teigė, jog monetarinė politika turi įtakos infliacijai, tačiau tik kaip viena iš kompleksinės priežasčių grandinės dedamųjų dalių. Savo gyvenimo metais jis padėjo pagrindus keinsistinei ekonomikai ir visuminės paklausos  (angl. demand pull inflation) ir visuminės pasiūlos (angl. cost push inflation) sukeltos infliacijos aiškinimui. Savo ankstyvuosiuose darbuose Keynes'as rašė, jog valiutos nuvertėjimas ir kainų kilimas nėra naudingas valstybei ir tarptautinei prekybai, kadangi neigiamai atsiliepia didžiajai visuomenės daliai bei sutiko su Leninu ir infliaciją įvardino kaip vieną iš didžiausių grėsmių kapitalistinei sistemai [@humphrey1981keynes]. Keinsistinių pažiūrų ekonomika teigia, jog infliacija atsiranda ekonomikoje susidarius tokiai konjunktūrai, kai žmonių išlaidos yra didesnės nei gėrybių pasiūlą rinkoje, todėl tam, kad rinka išsivalytų, kainos turi kilti [@weidenaar1979anti].
+  XXa. antrajame dešimtmetyje J.M.Keynes'as buvo monetaristų pusėje ir tikėjo, jog pinigų pasiūlos ir palūkanų keitimo politika yra geriausias būdas užtikrinti kainų stabilumą, o taip pat, kylant infliacijos grėsmei, Keynes'as siūlė ir drastiškas šalto dušo priemones [@o2016keynes]. Po Pirmojo pasaulinio karo Keynes'as iškėlė idėją, jog centriniai bankai turėtų būti nepriklausomi nuo vyriausybės ir nefinansuoti valstybės išlaidų, taip pat, matydamas, jog nepaisant monetarinio skatinimo ir žemos palūkanų normos Britanija kentėjo nuo aukšto nedarbo lygio ir bendro ekonomikos strigimo, Keynes'as perėjo į fiskalinės politikos pusę ir pristatė visuminės paklausos idėja. 
+  Laikui bėgant, Keinso pasekėjai išplėtojo jo idėjas, jomis remiantis sukūrė visuminės paklausos ir visuminės paklausos modelį, o keinsistinė ekonomika pabrėžia valstybes galią kovojant su infliacija ir pagrindine infliacijos suvaldymo priemone laiko visuminės paklausos ir pasiūlos korekcijas naudojant restrikcinę fiskalinę politiką ir atmeta monetaristų siūlytą šalto dušo metodą, kuris, anot jų, nėra tvarus [@o2016keynes].
+
+## Aukos santykis
+  Klausimas, kuris infliacijos mažinimo būdas - klasikų siūlytas šaltas dušas ir staigios bei drastiškos priemonės ar nuosaikus infliacijos mažinimas - yra geresnis, ginčų objektu buvo ganėtinai ilgą laiką. 1994m Amerikiečių ekonomistas Laurence M. Ball publikacijoje „*What Determines the Sacrifice Ratio*“ empirinių stebėjimų pagalba surinko duomenis ir apskaičiavo abiejų šių infliacijos mažinimo būdų aukos santykius. Jis teigė, jog moderniosiose ekonomikose disinfliacija yra pagrindinė recesijų priežastis. Aukos santykis - tai prarastos gamybos kiekis, kiekvienam infliacijos tempo sumažėjimo procentiniam punktui [@ball1994determines].  
+  Disinfliacija visais atvejais kainuoja prarastą gamybos kiekį, tačiau skirtingi požiūriai į infliacijos mažinimą pateikia skirtingus privalumus ir trūkumus. Nuosaikių priemonių šalininkai teigia, jog toks mažinimo būdas yra mažiau žalingas, kadangi atlyginimai ir kainų lygis yra inertiški, todėl jiems prireikia laiko prisitaikyti prie monetarinės restrikcijos [@taylor1982union]. Staigių priemonių ir "šalto dušo" šalininkai teigė, jog greitos ir ryžtingos priemonės kelia pasitikėjimą ir efektyviai bei greitai sumažina infliacinius lūkesčius taip pat panaikina "meniu kaštus". Jie teigė, kad nuosaikios mažinimo priemonės gali reikšmingai nepaveikti infliacinių lūkesčių ir paskatinti visuomenės spekuliacijas apie infliacijos kilimą ateityje [@sargent1981stopping].
+  Tyrimo metu gauti vidutiniai aukos santykiai matomi lentelėje (žr. 1-ą lentelę), jie varijuoja nuo *0.22* Prancūzijoje iki *2.52* Vokietijoje. Tyrinėjant įvairius atvejus, nustatyta, jog mažesni produkcijos nuostoliai patirti staigaus infliacijos mažinimo priemonių ir lankstaus darbo užmokesčio atveju. Autorius pažymi, jog tokie rezultatai galioja tik tuomet, kai priemones vertiname per prarastos produkcijos prizmę, tačiau nevertiname bendros gerovės, kadangi nuosaikus mažinimo politika gerovės nuostolius sugebėtų paskirstyti ilgesniame laikotarpyje taip sumažinant momentinį šoką, o vyriausybės visų pirma turėtų rūpintis didesniu darbo užmokesčio lankstumu ir mažinti terminuotų darbo kontraktų trukmę [@ball1994determines]. 
+  Tyrimo rezultatai susilaukė kritikos dėl to, jog matavimai neatsižvelgia į veiksnius, kurie veikia tiek infliaciją, tiek gamybą, kaip pavyzdžiui pasiūlos šokus, kas reiškia, jog galutinis vertinimas nėra visiškai tikslus ir turėtų būti vertinamas kaip vienas iš galimų variantų.
+
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+  
+```{r,echo=FALSE}
+  text_tbl <- data.frame(
+  Valstybė = c("Australija","Austrija","Belgija","Kanada","Danija","Suomija","Prancūzija","Vokietija", "Airija","Italja","Japonija","Liuksemburgas","Nyderlandai","Naujoji Zelandija","Ispanija","Švedija","Šveicarija","Jungtinė Karalystė","JAV"),
+  Aukos_Santykis = c("0.32","0.47","0.98","1.20","0.56","0.72","0.22","2.52","0.72","1.48","-0.23","0.53","0.31","0.53","0.90","0.45","0.86","0.68","2.30")
+)
+kable(text_tbl, caption = "„Average sacrifice ratios by country“ (Ball 1994)") %>%
+  kable_styling(latex_options = "HOLD_position")%>%
+  row_spec(0, bold = T)
+```
+```{r, echo=FALSE}
+cat('\n\n')
+cat('\n\n')
+```
+
+
+
+# Fiskalinės priemonės
+
+  Valstybės dažnu atveju naudoja fiskalines priemones ekonomikos stabilumui užtikrinti. Pagrindiniai du fiskalinės politikos komponentai yra vyriausybės pajamos, surenkamos mokesčių pagalba ar skolinantis, ir išlaidos. Egzistuoja ir skolinimosi bei skolos valdymo politika, tačiau ji glaudžiai susijusi su centrinio banko vykdoma monetarine politika ir dažnu atveju yra išskiriama kaip atskira nuo fiskalinės ir monetarinės politikų stabilizavimo rūšis  [@husainanti].Infliacija kontroliuojama mažinant išlaidas, didinant pajamas arba naudojant abi priemones vienu metu. Pagrindinis tokių priemonių tikslas - ekonomikos stabilumas t.y. aukštas užimtumo ir stabilus kainų lygiai. Nepaisant fiskalinės politikos trūkumų, ji taip pat turi ir minusų, tokių kaip mažas poveikis pasiūlos sukeltai infliacijai bei dar didesnių problemų sukėlimas, kai fiksuojama didelė infliacija ir neigiamas produkcijos augimas.
+
+## Vyriausybės išlaidos
+  Vyriausybė, siekdama kontroliuoti visuminę paklausą ir infliaciją, gali mažinti savo išlaidas ir taip atsverti privataus vartojimo padidėjimą. Valstybės išlaidos turėtų būti sąmoningai mažinamos siekiant sulaikyti naujų pinigų tiekimą, tačiau jos nėra labai elastingos ir lengvai prisitaikančios prie pokyčių, reikalingų infliacijai valdyti [@husainanti]. Taip pat, valstybė privalo užtikrinti socialinę ir sveikatos apsaugą, sienų gynybą, viešojo sektoriaus išlaikymą, todėl egzistuoja tam tikri limitai, žemiau kurių išlaidų mažinti negalima, o tai suveikia kaip ribojantis šios priemonės veiksnys. Taip pat, mažinamos išlaidos atima politinius dividendus iš sprendimus priimančių politikų, todėl mažinamos išlaidos nėra dažnai naudojama priemonė.
+  Teigiamas sąryšis tarp vyriausybės išlaidų ir infliacijos atsispindi ir grafike (žr. 1 pav.). Grafike analizuojami JAV Federalinio rezervo banko duomenys - metinė infliacija ir kasmetinis vyriausybės išlaidų pokytis. Akivaizdžiai matoma, jog didinamos vyriausybės išlaidos iššaukia didesnę infliaciją. Pearsono koreliacijos koeficientas tarp šių dydžių yra 0.64, o tai byloja apie vidutinio stiprumo teigiamą saryšį.
+```{r, fig.align='center', fig.cap="JAV vyriausybės išlaidos ir infliacija (1960-2019m).", echo=FALSE}  
+  exp <- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FGEXPND&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=pc1&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1947-01-01", sep=",")
+infl <- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FPCPITOTLZGUSA&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1960-01-01", sep=",")
+exp$DATE <- as.Date(exp$DATE)
+infl$DATE <- as.Date(exp$DATE)
+df <- data.frame(exp$DATE, exp$FGEXPND_PC1, infl$FPCPITOTLZGUSA)
+ggplot(df, aes(df$infl.FPCPITOTLZGUSA, df$exp.FGEXPND_PC1))+
+        geom_point(size=1.5, col="steelblue")+
         theme_stata()+
         theme(axis.text.x=element_text(angle=45,hjust=1),
               axis.text=element_text(size=9),
               axis.title=element_text(size=12,face="bold"),
               plot.background = element_rect(fill = "white"))+
-        labs(x="Valstybė", y="Ekonomikos atvirumas, %BVP", title="ES valstybių ekonomikų atvirumas 2019m.", 
-             subtitle="Duomenų šaltinis: Eurostat")+
-        geom_text(aes(label=paste0(trade,"")), vjust=-0.25, size=3)+
-        theme(plot.title = element_text(hjust = 0),
-              plot.subtitle = element_text(hjust = 0),axis.text=element_text(size=9))+
-        scale_y_continuous(breaks=seq(0,450, by=100))
+        labs(x="Vyriausybės išlaidos, [%] pokytis nuo praėjusių metų", y="Infliacija", title="Vyriausybės išlaidų ir Infliacijos ryšys JAV 1960-2019m.", 
+             subtitle="Duomenų šaltinis: FRED")+
+        geom_smooth(method = lm, se=FALSE, col="black")
 ```
+
+## Mokesčiai
+  Antroji fiskalinė priemonė - mokesčių didinimas. Didesni mokesčiai sumažina vartotojų disponuojamas pajamas, kas sumažina bendrą vartojimą ir visuminę paklausą. Mokestinė valstybės sistema turėtų prisitaikyti prie kylančių kainų, o gautos pajamos gali būti naudojamos biudžeto perviršiui recesijos laikams kaupti. Augantys mokesčiai tuo pačiu galėtų sugerti ir dėl augančios pinigų pasiūlos kylančią infliaciją.
+  Tačiau bendras visų mokesčių kėlimas nėra gera priemonė, apmokestinimas privalo būti taiklus ir pasvertas. Pavyzdžiui, jei pakeliamas importo mokestis, o šalies ekonomika ypatingai priklausoma nuo importuojamų prekių, tuomet norimas infliacijos mažinimas bus paveiktas augančių importuotų prekių kainų [@husainanti]. 
+  Taip pat mokestinės priemonės gali būti pritaikytos ir siekiant suvaldyti pasiūlos šoko sukeltą infliaciją. Tokiu atveju vyriausybės turi mažinti mokestinę naštą pramonės ir paslaugų sektoriaus įmonėms taip siekiant sumažinti jų kaštus ir išlaikyti stabilias kainas, tačiau tokios priemonės yra sunkiai prognozuojamos, kadangi įmonės gali tikėtis, jog mokesčiai greitai vėl didės arba net ir sumažėjus įmonių kaštams, jos gali ir toliau išlaikyti aukštas kainas ir net jas didinti, ypač jei rinka monopolinė (@supel1980supply).
+
+# Monetarinės priemonės
+  Monetarinė politika - pagrindinė centrinių bankų vykdoma veikla. Centriniai bankai reguliuoja pinigų pasiūlą, palūkanų normas atsižvelgiant į ekonomikos ciklą. Infliacijos metu centrinis bankas mažina pinigų pasiūlą ir didina palūkanų norma. Didesnė palūkanų norma stabdo vartojimą, kadangi skolintis pasidaro brangiau, labiau apsimoka taupyti, taip pat aukšta palūkanų norma padidina valiutos kursą, kas savo ruožtu sumažina exportą ir didina importą. Palūkanų normos įtaka infliacijai matoma grafikuose. Analizuojant pateiktas laiko eilutes, galima įžvelgti, jog aukštesnė palūkanų norma dažnu atveju sąlygoja krentančia infliaciją, tačiau kritimas dažniausiai pasireiškia sekančiame laikotarpyje, tačiau egzistuoja ir laikotarpių, kai palūkanų norma pakyla infliacijai pradėjus leistis, kas byloja apie per vėlai naudojamas restrikcines monetarines priemones. (žr.1-ą pav). Centrinių bankų ir palūkanų normos reakciją į infliaciją atspindi ryšys tarp infliacijos ir palūkanų normos (žr.2-ą pav.). Pearsono koreliacijos koeficientas yra 0.782, kas reiškia stiprią koreliaciją tarp šių kintamųjų, todėl galime daryti išvadas, jog centriniai bankai greitai adaptuoja palūkanų normą prie infliacijos lygio.
+  Centrinis bankas taip pat gali pasitelkti atvirosios rinkos operacijas ir rinkos dalyviams pardavinėja vertybinius popierius taip sumažinant pinigų kiekį apyvartoje. Komerciniai bankai, įsigiję vertybinių popierių, turės mažiau skolinamų lėšų, o tai pabrangins skolinimąsį vartotojams bei atsilieps bendram vartojimo lygiui.
+  Kita priemonė - bankų privalomojo rezervo reguliavimas. Infliaciniu laikotarpiu centrinis bankas didina privalomų banko atsargų normą ir taip mažina kreditui galimų išduoti lėšų skaičių. Tokia priemonė yra ypač veiksminga, kadangi rezervų didinimas tiesiogiai ir labai greitai sumažina skolinamų lėšų skaičių.
+  Tačiau monetarinė politika turi ir trūkumų. Monetariniai instrumentai nepasiekia norimų rezultatų, jei vartotojų lūkesčiai yra geri. Esant teigiamiems lūkesčiams vartojimas bus didelis net ir didėjant palūkanų normai. Kitas monetarinės politikos ribojimas yra laiko lagas (uždelstas veikimas). Palūkanų normos poveikiui pasireikšti ir paveikti visuminę paklausą gali prireikti iki 18 mėnesių, todėl efektui pasirodžius bendra ekonomikos būklė jau gali reikalauti kitokių priemonių [@grant2013cambridge]. Taip pat monetariniai įrankiai turi mažai įtakos pasiūlos šokui sukeltai infliacijai.
+```{r, fig.align='center', fig.cap="JAV vyriausybės išlaidos ir infliacija (1960-2019m).", echo=FALSE}  
+infl <- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FPCPITOTLZGUSA&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1960-01-01", sep=",")
+int<- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FEDFUNDS&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1954-07-01", sep=",")
+infl$DATE <- as.Date(exp$DATE)
+df2 <- data.frame(int, infl$FPCPITOTLZGUSA)
+df2$DATE <- as.Date(df2$DATE)
+ggplot(df2, aes(x=DATE, group=1))+
+        geom_line(aes(y=infl.FPCPITOTLZGUSA, col="Infliacija"), size=1.15)+
+        geom_line(aes(y=FEDFUNDS, col="Palūkanų norma",), size=1.15)+
+        theme_stata()+
+        theme(axis.text.x=element_text(angle=45,hjust=1),
+              axis.text=element_text(size=9),
+              axis.title=element_text(size=12,face="bold"),
+              plot.background = element_rect(fill = "white"))+
+        labs(x="Metai", y="Infliacija/Palūkanų norma [%]", title="Palūkanų norma ir infliacija JAV 1960-2019m.", 
+             subtitle="Duomenų šaltinis: FRED")+
+        scale_colour_manual(values=c("steelblue", "black"))+
+        theme(legend.title=element_blank())
+```
+  
+```{r, fig.align='center', fig.cap="JAV vyriausybės išlaidos ir infliacija (1960-2019m).", echo=FALSE}  
+infl <- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FPCPITOTLZGUSA&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1960-01-01", sep=",")
+int<- read.delim("https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=748&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=FEDFUNDS&scale=left&cosd=1960-01-01&coed=2019-01-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Annual&fam=avg&fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date=2020-05-29&revision_date=2020-05-29&nd=1954-07-01", sep=",")
+infl$DATE <- as.Date(exp$DATE)
+df2 <- data.frame(int, infl$FPCPITOTLZGUSA)
+df2$DATE <- as.Date(df2$DATE)
+ggplot(df2, aes(df2$FEDFUNDS, y=df2$infl.FPCPITOTLZGUSA))+
+        geom_point(size=1.5, col="steelblue")+
+        theme_stata()+
+        theme(axis.text.x=element_text(angle=45,hjust=1),
+              axis.text=element_text(size=9),
+              axis.title=element_text(size=12,face="bold"),
+              plot.background = element_rect(fill = "white"))+
+        labs(x="Palūkanų norma [%]", y="Infliacija [%]", title="Palūkanų normos ir Infliacijos ryšys JAV 1960-2019m.", 
+             subtitle="Duomenų šaltinis: FRED, cor=0.782")+
+        geom_smooth(method = lm, se=FALSE, col="black")
+
+
+```
+
+# Kainų kontrolė
+  Kainų kontrolės mechanizmai naudoti dar antikoje, o ypač suklestėj Antrojo pasaulinio karo metu ir po jo. Kainų kontrolės tikslas - nustatyti maksimalias kainas gėrybėms taip užtikrinant stabilų kainų lygį ir apsaugojant labiausiai pažeidžiamus visuomenės sluoksnius. Kainų kontrolė yra geras įrankis, kai valstybėje, dėl gerybių trūkumo, prasideda spekuliavimas ir suklesti juodoji rinka [@husainanti]. J.M.Keynes'as kainų reguliavima laikė blogu įrankiu, kadangi jis trukdo pasiekti pusiausvyros ekonomikos tašką, o laisvai svyruojančių kainų sistema yra ypatingai svarbi kapitalizmui [@laguerodie2008theory]. Prieš kainų kontrolę pasisako ir daugelis kitų ekonomistų, kadangi kainų kontrolė sutrukdo išteklių pasisiskirstymą, o kainų lubos sukelia prekių deficitą [@rockoff1992price] (nustačius mažesnę už pusiausvyros kainą pakyla paklausa, tačiau krenta pasiūla, todėl atsiranda prekės deficitas).
+
+
+\newpage
+# Literatūros sąrašas
