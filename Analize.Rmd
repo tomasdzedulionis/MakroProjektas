@@ -37,18 +37,27 @@ install.packages("kableExtra"); library("kableExtra")
 # Įvadas
 
 ## Darbo aktualumas 
+Pavasarį Lietuvoje paskelbus karantiną visuomenėje
+ir kone visuose žiniasklaidos leidiniuose(tiek skaitmeniniuose, tiek
+ir popieriniuose) nuolat kalbama apie ekonomines tokio sprendimo
+pasėkmes, jos lyginamos su kitų valstybių galimomis pasėkmėmis. Vieni
+iš dažniau pasitaikančių ekonomikos rodiklių, apie kuriuos kalbama
+viešojoje erdvėje - bendrojo vidaus produkto augimo pokyčiai ir
+infliacija - kainų lygio kilimas. Todėl, šnekant apie infliaciją, visų
+pirma reikia suvokti, kas tai per procesas ir kaip jį galima
+kontroliuoti.
+
 
 ## Darbo objektas
-Darbo objektas: Infliacijos samprata, sprendimo būdai ir Zimbabvės praktinis pavyzdys.
+Infliacijos samprata, sprendimo būdai ir Zimbabvės praktinis pavyzdys.
 
 ## Darbo tikslas
-Darbo tikslas: Išskirti istoriškai susiformavusias skirtingas infliacijos sampratas, išsiaiškinti infliacijos kontrolei naudojamas ekonomines priemones, aptarti infliacijos raidos ir kontrolės pavyzdį Zimbabvėje.
+Išskirti istoriškai susiformavusias skirtingas infliacijos sampratas, išsiaiškinti infliacijos kontrolei naudojamas ekonomines priemones, aptarti infliacijos raidos ir kontrolės pavyzdį Zimbabvėje.
 
 ## Darbo metodai
-Darbo metodai: Lyginamoji mokslinės literatūros ir statistinė analizė.
+Lyginamoji mokslinės literatūros ir statistinė analizė.
 
 ## Darbo uždaviniai
-Darbo uždaviniai:  
 1. Išskirti ir paaiškinti skirtingas infliacijos sampratas.  
 2. Išsiaiškinti infliacijos suvaldymui naudojamas ekonomines priemones ir jų poveikį.  
 3. Aptarti Zimbabvės infliacijos XXa. pab. - XXIa. pr. raidą ir taikytas kontrolės priemones.  
@@ -198,6 +207,9 @@ Nepaisant to, infliacija ir toliau augo, o nuo kovo mėnesio Zimbabvėje oficial
   2009 metais visiškai nustota vertinti prekes, paslaugas ar kokius nors kitokius piniginius santykius Zimbabvės doleriais. Visi piniginiai santykiai vyko atsiskaitant arba JAV doleriais, arba Pietų Afrikos randais. Anot Tarptautinio valiutos fondo, toks perėjimas prie šių valiutų, o ilgainiui konkrečiai prie JAV dolerio, padėjo stabilizuoti kainas šalyje, leido normaliai vystytis paskoloms ir indėliams, o taip pat privertė valdžios institucijas laikytis fiskalinės drausmės. Kaip pastebi vėlesnės(2016m.) TVF Zimbabvės ekonomikos apžvalgos, „dolerizacija“ sugrąžino valstybės gyventojams pasitikėjimą ekonomika, sudarė sąlygas ekonomikai pradėti grįžimą į normalų ritmą. Tai liudija ir Tarptautinio valiutos fondo pateikiama statistika – nuo 2009 iki 2012 metų ekonomika augo vidutiniškai po 10% kasmet. Kita vertus, pastaraisiais metais Zimbabvėje vel iškyla problemų. Užsienio kapitalui pradėjus grįžti į valstybės ekonomiką, Zimbabvėje pradėjo steigtis užsienio įmonės, įvairios atstovybės. Po 2013 metais įvykusių rinkimų finansų ministru paskirtas Patrick Chinamasa kritiškai atsiliepė apie tokias įmones ir paskelbė, kad juodaodžiams Zimbabvės piliečiams turi būti perduota 51% ar daugiau baltaodžiams priklausančių įmonių. Na o 2019 metų vasarį Zimbabvės Rezervinis Bankas paskelbė, kad atkuriamas Zimbabvės doleris, kuris nuo birželio mėnesio tapo vienintele oficialia Zimbabvės valiuta. Jau liepos viduryje infliacija pasiekė 175%, o tai sukėlė įtarimus, kad valstybė ir vėl eina link kadaise turėtos hiperinfliacijos. Norėdama išvengti tokių kalbų Zimbabvės vyriausybė nuo rugpjūčio paprasčiausiai nustojo dalintis infliacijos duomenimis, o gruodį numanomai infliacijai pasiekus apie 520% Rezervinis Bankas paskelbė, kad tikisi per 2020 metus infliaciją sumažinti iki 50%.
   
 # Išvados
+
+  Infliacija - procesas, už kurio atsiradimą dažnu atveju yra atsakinga ne viena konkreti, o veikiau visa kompleksinė priežasčių grandinė. Skirtingos infliacijos rūšys reikalauja skirtingų antiinfliacinių priemonių - tiek fiskalinės, tiek monetarinės ir net kainų kontrolė atskirais atvejais gali būti naudingais sprendimo būdais, tačiau kiekvienas atvejis yra individualus, todėl ir priemonių efektyvumas priklauso būtent nuo situacijos duotoju momentu. Tačiau aišku viena, kad problemos ignoravimas gali turėti skaudžių pasekmių.
+  Zimbabvės pavyzdys rodo, kad fiskalinės drausmės laikymasis yra itin svarbus, siekiant palaikyti stabilią valstybės ekonomiką. Neatsakingai leidžiant valstybės biudžete sukauptas lėšas ir papildant jas naujai spausdinamais pinigais ilgainiui galima prieiti iki hiperinfliacijos ir paversti nacionalinės valiutos vertę niekine. Ekonominio stabilumo neužtikrinimas ir infliacijos nesuvaldymas taip pat atgraso užsienio investuotojus ir žlugdo vietinį verslą.
 
 \newpage
 # Literatūros sąrašas
